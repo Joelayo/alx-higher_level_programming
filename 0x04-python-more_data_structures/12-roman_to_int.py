@@ -1,12 +1,15 @@
 #!/usr/bin/python3
 def roman_to_int(roman_string):
-    if isinstance(roman_string, str) != True or roman_string == None:
+    if type(roman_string) is not str or len(roman_string) is 0:
         return 0
-    rom_val = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
-    int_val = 0
-    for i in range(len(roman_string)):
-        if i > 0 and rom_val[roman_string[i]] > rom_val[roman_string[i - 1]]:
-            int_val += rom_val[roman_string[i]] - 2 * rom_val[roman_string[i - 1]]
+    letters = roman_string
+    dic = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+    elem = 0
+    convention = 0
+    while elem < len(letters):
+        if elem < len(letters) - 1 and dic[letters[elem]] < dic[letters[elem+1]]:
+            convention -= dic[letters[elem]]
         else:
-            int_val += rom_val[roman_string[i]]
-    return int_val
+            convention += dic[letters[elem]]
+        elem += 1
+    return convention
