@@ -1,26 +1,23 @@
 #!/usr/bin/python3
-"""
-Contains the clas "Student"
-"""
+""" Module for task 10 """
 
 
 class Student:
-    """Representation of a student"""
+    """ My Student class """
     def __init__(self, first_name, last_name, age):
-        """Initializes the student"""
+        """ Initialization """
         self.first_name = first_name
         self.last_name = last_name
         self.age = age
 
     def to_json(self, attrs=None):
-        """returns a dictionary representation of a Student instance
-        with specified attributes"""
-        if attrs is None:
-            return self.__dict__
-        new_dict = {}
-        for a in attrs:
-            try:
-                new_dict[a] = self.__dict__[a]
-            except:
-                pass
-        return new_dict
+        """ Retrieves a serialized version of the object based on a filter """
+        result = dict(self.__dict__)
+        if attrs and all([isinstance(x, str) for x in attrs]):
+            result = {}
+            for i in attrs:
+                try:
+                    result[i] = self.__dict__[i]
+                except KeyError:
+                    pass
+        return result
