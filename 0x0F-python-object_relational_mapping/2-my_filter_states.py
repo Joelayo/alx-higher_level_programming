@@ -1,21 +1,27 @@
 #!/usr/bin/python3
-"""
-python script that lists all states from the database hbtn_0e_0_usa with
-a given name
-"""
-
+'''Prints all rows in the states table of a database
+with a name that matches the given argument.
+'''
+import sys
 import MySQLdb
-from sys import argv
 
-if __name__ == "__main__":
-    db = MySQLdb.connect(host="localhost", port=3306, user=argv[1],
-                         passwd=argv[2], db=argv[3], charset="utf8")
-    cursor = db.cursor()
-    cursor.execute('SELECT * FROM states WHERE CAST(name AS BINARY) LIKE ' +
-            'CAST("{}" AS BINARY) ORDER BY id ASC;'.format(state_name))
-    rows = cursor.fetchall()
-    for row in rows:
-        if row[1] == argv[4]:
-            print(row)
-    cursor.close()
-    db.close()
+
+if __name__ == '__main__':
+    if len(sys.argv) >= 5:
+        db_connection = MySQLdb.connect(
+            host='localhost',
+            port=3306,
+            user=sys.argv[1],
+            passwd=sys.argv[2],
+            db=sys.argv[3]
+        )
+        cursor = db_connection.cursor()
+        state_name = sys.argv[4]
+        cursor.execute(
+            'SELECT * FROM states WHERE CAST(name AS BINARY) LIKE ' +
+            'CAST("{}" AS BINARY) ORDER BY id ASC;'.format(state_name)
+        )
+        results = cursor.fetchall()
+        for result in results:
+            print(result)
+        db_connection.close()
